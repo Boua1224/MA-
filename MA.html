@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>命中率計算器</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+    }
+    label, input {
+      display: block;
+      margin: 10px 0;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+    }
+    button {
+      padding: 10px;
+      margin-top: 15px;
+      width: 100%;
+      font-size: 16px;
+    }
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <h2>命中率計算器</h2>
+
+  <label>角色智力</label>
+  <input type="number" id="intelligence">
+
+  <label>角色幸運</label>
+  <input type="number" id="luck">
+
+  <label>怪物迴避值</label>
+  <input type="number" id="evasion">
+
+  <label>怪物等級</label>
+  <input type="number" id="monsterLevel">
+
+  <label>角色等級</label>
+  <input type="number" id="playerLevel">
+
+  <button onclick="calculate()">計算命中率</button>
+
+  <div id="result"></div>
+
+  <script>
+    function calculate() {
+      const intelligence = parseFloat(document.getElementById("intelligence").value);
+      const luck = parseFloat(document.getElementById("luck").value);
+      const evasion = parseFloat(document.getElementById("evasion").value);
+      const monsterLevel = parseInt(document.getElementById("monsterLevel").value);
+      const playerLevel = parseInt(document.getElementById("playerLevel").value);
+
+      if (isNaN(intelligence) || isNaN(luck) || isNaN(evasion) || isNaN(monsterLevel) || isNaN(playerLevel)) {
+        document.getElementById("result").innerText = "請輸入所有數值。";
+        return;
+      }
+
+      const numerator = (intelligence + luck) / 10;
+      const levelDiff = monsterLevel - playerLevel;
+      const denominator = (evasion + 1) * (1 + 0.04 * levelDiff);
+      const hitRate = (numerator / denominator) * 100;
+
+      document.getElementById("result").innerText = `命中率：${hitRate.toFixed(2)}%`;
+    }
+  </script>
+</body>
+</html>
